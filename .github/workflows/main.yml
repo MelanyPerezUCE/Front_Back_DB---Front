@@ -86,35 +86,9 @@ jobs:
                 -p 80:80 \
                 melany555/pruebita1:latest
 
-
               echo "Despliegue completado exitosamente"
               docker ps
 
-  deploy-to-ec2-back:
-      needs: build-and-push
-      runs-on: ubuntu-latest
-      steps:
-        - name: Trigger redeploy on EC2
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.HOST_DNS_BACK }}
-            username: ${{ secrets.USERNAME }}
-            key: ${{ secrets.EC2_SSH_KEY }}
-            script: |
-              echo "Conectando a ${{ secrets.HOST_DNS_BACK }} para redeploy"
-              
-              # Descargar las imágenes desde Docker Hub      
-              docker pull melany555/pruebita2:latest
-
-
-              # Detener y eliminar contenedores antiguos
-              docker stop pruebita2 || true
-              docker rm pruebita2 || true
-
-
-              # Iniciar el contenedor pruebita
-              docker run -d --name pruebita2 \
-                --restart always \
                 -p 3000:3000 \
                 melany555/pruebita2:latest
 
