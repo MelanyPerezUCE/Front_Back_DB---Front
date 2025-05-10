@@ -1,5 +1,5 @@
 FROM node:22-bullseye
-WORKDIR /Front
+WORKDIR /
 COPY . .
 RUN npm install
 EXPOSE 80
